@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -28,12 +29,12 @@ public class UserController {
     private PatternProperties properties;
 
     @GetMapping("prop")
-    public PatternProperties properties(){
+    public PatternProperties properties() {
         return properties;
     }
 
     @GetMapping("now")
-    public String now(){
+    public String now() {
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern(properties.getDateformat()));
     }
 
@@ -44,7 +45,9 @@ public class UserController {
      * @return 用户
      */
     @GetMapping("/{id}")
-    public User queryById(@PathVariable("id") Long id) {
+    public User queryById(@PathVariable("id") Long id,
+                          @RequestHeader(value = "Truth", required = false) String truth) {
+        System.out.println("truth: " + truth);
         return userService.queryById(id);
     }
 }
